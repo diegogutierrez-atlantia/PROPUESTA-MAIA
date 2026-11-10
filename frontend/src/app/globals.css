@@ -1,0 +1,964 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EL CATÁLOGO DE COLORES DE LA CASA
+   ═══════════════════════════════════════════════════════════════════════════
+
+   Todo color que se pinta en un reporte sale de aquí. Cada token tiene su
+   valor en tema claro y su valor en tema oscuro, y los dos son pasos de las
+   escalas OFICIALES de Atlantia (guía de marca en GAIA). No se inventan tonos:
+   si falta uno, se toma el paso más cercano de la escala.
+
+   La versión visual de este archivo, con los pares claro/oscuro uno junto al
+   otro, está en `documentacion/marca/catalogo-de-colores.html`. Si cambias
+   un valor aquí, cámbialo allá: es lo que revisa el equipo.
+
+   ── LAS TRES REGLAS ────────────────────────────────────────────────────────
+   1. El morado manda: Violet es el protagonista.
+   2. Turquesa, púrpura y limón son acentos, nunca fondos de lámina.
+   3. Un hex suelto en un componente es un bug: no voltea con el tema.
+
+   ── CÓMO ESTÁ ORGANIZADO ───────────────────────────────────────────────────
+   @theme            lo que NO cambia con el tema: las escalas, los rellenos
+                     de marca, los chips de banda, la escala tipográfica.
+   :root             lo que SÍ cambia: papel, tinta, rampas, acentos de texto.
+   :root[data-theme] los mismos nombres, con los valores para fondo hondo.
+   @theme inline     los del tema expuestos a Tailwind (text-ink, bg-papel…).
+
+   El auditor (`pnpm auditar:tokens`) comprueba que cada token que usa el
+   código exista aquí, en los DOS temas. No da veredictos de contraste: si un
+   color del catálogo se ve, se ve. */
+
+@theme {
+  /* ── Las escalas oficiales (100 el más oscuro, 10 el más claro; el 80 es
+        el color de identidad) ────────────────────────────────────────────── */
+  --color-violet-100: #2d1d5d;
+  --color-violet-80: #482f91;
+  --color-violet-60: #7460ab;
+  --color-violet-40: #a492c5;
+  --color-violet-20: #ccc4e0;
+  --color-violet-10: #e5e0f2;
+
+  --color-purple-100: #722f8f;
+  --color-purple-80: #aa49ca;
+  --color-purple-60: #c072db;
+  --color-purple-40: #d59be6;
+  --color-purple-20: #e8c5f2;
+  --color-purple-10: #f4e0f9;
+
+  --color-turquoise-100: #028b89;
+  --color-turquoise-80: #04d1cd;
+  --color-turquoise-60: #3ddbd8;
+  --color-turquoise-40: #7de9e7;
+  --color-turquoise-20: #b0f2f0;
+  --color-turquoise-10: #d8f8f7;
+
+  --color-lemon-100: #4a7a0b;
+  --color-lemon-80: #77c014;
+  --color-lemon-60: #9dd44f;
+  --color-lemon-40: #bde28a;
+  --color-lemon-20: #d8f0bb;
+  --color-lemon-10: #edfadb;
+
+  --color-neutral-100: #656060;
+  --color-neutral-80: #908989;
+  --color-neutral-60: #bbb4b4;
+  --color-neutral-40: #d5d1d1;
+  --color-neutral-20: #eae8e8;
+  --color-neutral-10: #f5f4f4;
+
+  /* Semánticas: comunican estado, no identidad. Nunca decorativas. */
+  --color-green-100: #1a5a32;
+  --color-green-80: #2a9152;
+  --color-green-60: #55ab78;
+  --color-green-40: #85c9a1;
+  --color-green-20: #b5e0c8;
+  --color-green-10: #daf0e3;
+
+  --color-yellow-100: #7a5400;
+  --color-yellow-80: #c8a000;
+  --color-yellow-60: #dfbe40;
+  --color-yellow-40: #edda80;
+  --color-yellow-20: #f5ecba;
+  --color-yellow-10: #faf5dc;
+
+  --color-orange-100: #7a3200;
+  --color-orange-80: #d05000;
+  --color-orange-60: #e07830;
+  --color-orange-40: #eda070;
+  --color-orange-20: #f5c8a8;
+  --color-orange-10: #fbe4d2;
+
+  --color-red-100: #7a0e1c;
+  --color-red-80: #c41230;
+  --color-red-60: #d84055;
+  --color-red-40: #e87888;
+  --color-red-20: #f4b0ba;
+  --color-red-10: #fad8dc;
+
+  /* ── Los nombres de la marca, por uso. Son alias de pasos oficiales ──── */
+  --color-primary: #482f91;     /* violet-80: el morado de Atlantia */
+  --color-primary-900: #2d1d5d; /* violet-100: el extremo de los degradados */
+  --color-secondary: #aa49ca;   /* purple-80: el compañero del violeta */
+  --color-turquoise: #04d1cd;   /* turquoise-80: acento vivo, nunca fondo */
+  --color-lemon: #77c014;       /* lemon-80: acento de energía, con moderación */
+
+  /* Lo que va ENCIMA de un relleno de marca (texto, trazo, aro): blanco en
+     los dos temas, porque el relleno tampoco cambia. Tiene nombre para que
+     nadie escriba un #ffffff suelto. */
+  --color-sobre-relleno: #ffffff;
+
+  /* ── Rellenos semánticos (barra, chip, punto). No voltean: el relleno se
+        lee igual sobre los dos papeles. Su TINTA sí voltea (ver :root) ──── */
+  --color-positivo: #2a9152;    /* green-80: lo que sube */
+  --color-negativo: #aa49ca;    /* purple-80: lo que baja. NO rojo: un dato
+                                   bajo no es una falla */
+  --color-advertencia: #c8a000; /* yellow-80 */
+  --color-alerta: #d05000;      /* orange-80 */
+  --color-error: #c41230;       /* red-80: sólo un error real del sistema */
+
+  /* ── Bandas de desempeño (APS y cualquier puntaje con niveles). El chip
+        lleva el color de banda con texto blanco, en los dos temas. Con cuatro
+        bandas se usan 1, 2, 4 y 6; con tres, 1, 4 y 6 ─────────────────────── */
+  --color-banda-1: #1a5a32; /* green-100 · la más alta */
+  --color-banda-2: #2a9152; /* green-80 */
+  --color-banda-3: #028b89; /* turquoise-100 */
+  --color-banda-4: #482f91; /* violet-80 */
+  --color-banda-5: #7460ab; /* violet-60 */
+  --color-banda-6: #aa49ca; /* purple-80 · la más baja */
+
+  /* ── Regiones de un mapa (`MapaDeMexico`): las seis áreas Nielsen por
+        omisión, en el orden de su código (1 Pacífico … 6 Sureste), o la
+        clasificación que pase el estudio. Rellenos fijos, como las bandas.
+        Sólo morados y violetas, alternados para que dos regiones vecinas
+        nunca compartan tono; CDMX (5) es el paso hondo que se distingue
+        dentro de Centro (4), que es claro ─────────────────────────────────── */
+  --color-region-1: #d59be6; /* purple-40 · Pacífico */
+  --color-region-2: #482f91; /* violet-80 · Norte */
+  --color-region-3: #aa49ca; /* purple-80 · Oeste-Centro */
+  --color-region-4: #a492c5; /* violet-40 · Centro */
+  --color-region-5: #722f8f; /* purple-100 · CDMX */
+  --color-region-6: #c072db; /* purple-60 · Sureste */
+
+  /* ── La escala tipográfica fluida. Crece con la ventana en vez de
+        congelarse en un breakpoint: en 27 pulgadas un text-xs es tamaño de
+        celular flotando. El mínimo es el tamaño de móvil de siempre ────────── */
+  --text-kicker: clamp(0.875rem, 0.82rem + 0.22vw, 1.0625rem);
+  --text-kicker--line-height: 1.3;
+  --text-body: clamp(0.875rem, 0.82rem + 0.22vw, 1.125rem);
+  --text-body--line-height: 1.55;
+  --text-lead: clamp(1.125rem, 1rem + 0.55vw, 1.75rem);
+  --text-lead--line-height: 1.4;
+  --text-h3: clamp(1.5rem, 1.28rem + 0.9vw, 2.75rem);
+  --text-h3--line-height: 1.15;
+  --text-h2: clamp(1.875rem, 1.55rem + 1.35vw, 3.25rem);
+  --text-h2--line-height: 1.08;
+  --text-h1: clamp(2.25rem, 1.65rem + 2.5vw, 5.5rem);
+  --text-h1--line-height: 1.02;
+  --text-hero: clamp(4.5rem, 2rem + 10vw, 10rem);
+  --text-hero--line-height: 0.95;
+}
+
+/* ── TEMA CLARO: la opción ───────────────────────────────────────────────────
+   La marca vive sobre blanco. Los grises salen de la escala Neutral, la tinta
+   fuerte es Violet 100, y la rampa ordinal es la escala Violet.
+
+   Una sola pieza de estado: `data-theme="oscuro"` en <html>. Ausente, el
+   reporte es claro. EL QUE ABRE ES EL OSCURO (el layout manda el atributo
+   puesto); el claro lo elige el lector con el botón o con la tecla T y la
+   elección se guarda (lib/tema.ts). NO sigue al sistema operativo: un
+   entregable no cambia de cara según la computadora del que lo abre.
+
+   ── LAS SUPERFICIES TRAEN SU TINTA ──────────────────────────────────────────
+   El tema se decide una vez, en <html>. Pero un reporte tiene ISLAS: una
+   tarjeta blanca sobre la página honda, una lámina morada en tema claro. Sin
+   nada más, el texto de la isla pide "la tinta del tema" y le toca la del
+   papel de AFUERA: en oscuro, tarjeta blanca con letra blanca. Pasó en MIO
+   (2026-09) y la auditoría de colores no lo vio, porque cada color, por
+   separado, era del catálogo.
+
+   Por eso estos dos bloques no se aplican sólo a <html>: también a cualquier
+   elemento que declare su superficie.
+
+     data-superficie="clara"  todo lo de adentro toma papel y tinta de claro
+     data-superficie="honda"  todo lo de adentro toma papel y tinta de oscuro
+
+   Y la isla se pinta CON TOKENS (`bg-surface`, `text-ink`): dentro de la
+   declaración, `bg-surface` es blanco y `text-ink` es violeta hondo en los dos
+   temas. Todo fondo FIJO (un paso de escala, un relleno de marca, blanco) con
+   contenido encima tiene que declarar su superficie: `pnpm auditar:tokens` lo
+   exige. Las láminas de color la declaran solas (StoryCardFrame). */
+[data-superficie="clara"],
+:root {
+  color-scheme: light;
+
+  /* Papel */
+  --page: #f5f4f4;      /* neutral-10 */
+  --surface: #ffffff;   /* la tarjeta */
+  --surface-2: #e5e0f2; /* violet-10: la tarjeta secundaria */
+  --papel: #ffffff;     /* la caja donde vive una gráfica */
+  --pista: #d5d1d1;     /* neutral-40: el carril VACÍO detrás de una barra.
+                           Sin él, una barra al 30% se lee como una barra
+                           suelta y no como el 30% de algo. Era neutral-20 y
+                           sobre papel blanco medía 1.1 de contraste: la pista
+                           no se veía y la barra quedaba al aire (2026-09) */
+  --pista-2: #bbb4b4;   /* neutral-60: la pista de una segunda serie */
+  --border: #d5d1d1;    /* neutral-40: era neutral-20, igual de invisible */
+  --grid: #d5d1d1;      /* neutral-40: líneas de referencia de gráficas */
+
+  /* Tinta */
+  --ink: #2d1d5d;         /* violet-100: títulos y texto principal */
+  --ink-2: #656060;       /* neutral-100: cuerpo */
+  --muted: #656060;       /* neutral-100: bases, pies de fuente, etiquetas.
+                             Era neutral-80 y medía 2.0 a 2.7 de contraste
+                             sobre las tarjetas: las bases no se leían en
+                             claro (2026-09). Es el paso más oscuro del gris;
+                             lo que la separa del cuerpo es el tamaño */
+  --atenuado: #908989;    /* neutral-80: la serie que se ATENÚA (la competencia
+                             en una regla, lo que no se destaca). Es gris en
+                             los dos temas, para que nunca se confunda con la
+                             marca. Ver el tema oscuro */
+  --tinta-marca: #2d1d5d; /* violet-100: el violeta que hace de texto o trazo
+                             de marca sobre papel */
+  --marca: #482f91;       /* violet-80: UNA serie de marca (una sola barra,
+                             un solo aro). Cuando hay dos, --estimulo-a/b */
+  --kicker: #aa49ca;      /* purple-80: los kickers, en mayúsculas. Eran
+                             turquesa; la casa casi no usa el turquesa y se
+                             leía azul (decisión de Héctor, 2026-09) */
+  --acento: #aa49ca;      /* purple-80: lo que se DESTACA (la marca del
+                             estudio en un ranking, la tarjeta elegida), como
+                             trazo o como texto. Era turquesa en las formas
+                             que vinieron de los estudios */
+
+  /* Los dos glifos de significancia, con el color de los PNG de la casa
+     (public/significancia/). No están en las escalas: son los de la leyenda
+     de siempre y se respetan tal cual. Ver `.glifo-significancia` */
+  --signif-demografico: #919ba8; /* el gris del PNG de demográficos */
+  --signif-perfil: #36236d;      /* el violeta del PNG de perfiles */
+
+  /* Tinta semántica: la versión de cada estado que puede llevar letra */
+  --positivo-ink: #1a5a32;    /* green-100 */
+  --negativo-ink: #722f8f;    /* purple-100 */
+  --advertencia-ink: #7a5400; /* yellow-100 */
+  --alerta-ink: #7a3200;      /* orange-100 */
+  --error-ink: #7a0e1c;       /* red-100 */
+  --turquoise-ink: #028b89;   /* turquoise-100 */
+  --lemon-ink: #4a7a0b;       /* lemon-100 */
+
+  /* Los dos estímulos de una comparación (dos empaques, dos conceptos, dos
+     campañas). El color SIGUE AL ESTÍMULO en todo el reporte: si el primero
+     es violeta en la lámina 9, es violeta en la 14 */
+  --estimulo-a: #482f91; /* violet-80 */
+  --estimulo-b: #aa49ca; /* purple-80 */
+
+  /* Categórica: lo que NO tiene orden (grupos de atributos, bloques, marcas).
+     Hasta cinco; más de cinco es señal de que la gráfica está mal elegida.
+     Ninguna es semántica: un grupo de atributos no es bueno ni malo */
+  --cat-1: #482f91; /* violet-80 */
+  --cat-2: #028b89; /* turquoise-100 */
+  --cat-3: #aa49ca; /* purple-80 */
+  --cat-4: #4a7a0b; /* lemon-100 */
+  --cat-5: #908989; /* neutral-80 */
+
+  /* Ordinal: lo que SÍ tiene orden (edad, NSE, frecuencia). Un solo matiz de
+     más a menos: la escala Violet. Cinco pasos útiles; el sexto peldaño, si
+     hace falta, va en neutro y fuera de rampa (convención de la casa para lo
+     que no es un escalón de la escala). El paso 10 NO entra: sobre papel
+     claro no se percibe */
+  --ordinal-1: #2d1d5d; /* violet-100 · el extremo alto */
+  --ordinal-2: #482f91; /* violet-80 */
+  --ordinal-3: #7460ab; /* violet-60 */
+  --ordinal-4: #a492c5; /* violet-40 */
+  --ordinal-5: #ccc4e0; /* violet-20 */
+  --ordinal-6: #bbb4b4; /* neutral-60 · fuera de rampa. Un paso arriba de la
+                           pista, que ahora es neutral-40: igual a ella, la
+                           barra "fuera de rampa" desaparecía en su carril */
+
+  /* La escala hermana en Purple, para la SEGUNDA serie de una apilada */
+  --ordinal-p-1: #722f8f; /* purple-100 */
+  --ordinal-p-2: #aa49ca; /* purple-80 */
+  --ordinal-p-3: #c072db; /* purple-60 */
+  --ordinal-p-4: #d59be6; /* purple-40 */
+
+  /* La tinta SOBRE cada peldaño. No se calcula por luminancia en JavaScript
+     (los peldaños son var() y JavaScript no ve su valor): se declara junto al
+     peldaño, como un dato más del peldaño */
+  --sobre-ordinal-1: #ffffff;
+  --sobre-ordinal-2: #ffffff;
+  --sobre-ordinal-3: #ffffff;
+  --sobre-ordinal-4: #2d1d5d;
+  --sobre-ordinal-5: #2d1d5d;
+  --sobre-ordinal-6: #2d1d5d;
+  --sobre-ordinal-p-1: #ffffff;
+  --sobre-ordinal-p-2: #ffffff;
+  --sobre-ordinal-p-3: #ffffff;
+  --sobre-ordinal-p-4: #2d1d5d;
+
+  /* La tinta de cada banda cuando se escribe como texto (la cifra grande) */
+  --banda-1-ink: #1a5a32;
+  --banda-2-ink: #2a9152;
+  --banda-3-ink: #028b89;
+  --banda-4-ink: #482f91;
+  --banda-5-ink: #7460ab;
+  --banda-6-ink: #aa49ca;
+}
+
+/* ── TEMA OSCURO ─────────────────────────────────────────────────────────────
+   Los mismos nombres, con los valores para fondo hondo.
+
+   El papel es MORADO PROFUNDO, derivado de Violet 100 mezclado con negro, no
+   un gris de sistema: la guía no contempla tema oscuro, y ésta es la única
+   manera de que el oscuro siga siendo de la marca. La tinta sube a los pasos
+   claros de Violet. La rampa ordinal cambia a la escala Purple, que es la
+   hermana más luminosa: Violet sólo tiene tres pasos que se lean sobre fondo
+   hondo, y su paso 10 se veía BLANCO (fue el "abuso del blanco" que se cazó
+   en un reporte real). El extremo alto nunca es blanco.
+
+   Los rellenos de marca, los chips de banda y los fondos de lámina de color
+   NO cambian: son la marca, no el papel.
+
+   El bloque vale también para `data-superficie="honda"`: ver "Las superficies
+   traen su tinta", arriba. */
+[data-superficie="honda"],
+:root[data-theme="oscuro"] {
+  color-scheme: dark;
+
+  --page: #140d2a;      /* violet-100 al 45% sobre negro */
+  --surface: #201543;   /* violet-100 al 72% */
+  --surface-2: #26194f; /* violet-100 al 85% */
+  --papel: #201543;
+  --pista: rgba(229, 224, 242, 0.12);   /* violet-10 como veladura de luz */
+  --pista-2: rgba(229, 224, 242, 0.22);
+  --border: rgba(229, 224, 242, 0.12);
+  --grid: rgba(229, 224, 242, 0.12);
+
+  --ink: #e5e0f2;         /* violet-10 */
+  --ink-2: #ccc4e0;       /* violet-20 */
+  --muted: #a492c5;       /* violet-40 */
+  --tinta-marca: #ccc4e0; /* violet-20 */
+  --marca: #a492c5;       /* violet-40 */
+  --kicker: #c072db;      /* purple-60: un paso más luminoso que en claro,
+                             para que despegue del papel hondo */
+  --acento: #c072db;      /* purple-60 */
+  --atenuado: #908989;    /* neutral-80. Antes lo atenuado tomaba --muted, que
+                             en oscuro es violet-40: el MISMO paso que --marca.
+                             En una regla de precio, estímulos y competencia
+                             salían del mismo color aunque el pie dijera "en
+                             morado… en gris…" (2026-09) */
+  /* El violeta del PNG desaparece sobre papel hondo: en oscuro el de perfil
+     se aclara, y sigue siendo el que pesa más de los dos */
+  --signif-demografico: #919ba8;
+  --signif-perfil: #ccc4e0;      /* violet-20 */
+
+  --positivo-ink: #55ab78;    /* green-60 */
+  --negativo-ink: #d59be6;    /* purple-40 */
+  --advertencia-ink: #dfbe40; /* yellow-60 */
+  --alerta-ink: #e07830;      /* orange-60 */
+  --error-ink: #d84055;       /* red-60 */
+  --turquoise-ink: #04d1cd;   /* turquoise-80 */
+  --lemon-ink: #9dd44f;       /* lemon-60 */
+
+  --estimulo-a: #7460ab; /* violet-60 */
+  --estimulo-b: #c072db; /* purple-60 */
+
+  --cat-1: #a492c5; /* violet-40 */
+  --cat-2: #04d1cd; /* turquoise-80 */
+  --cat-3: #c072db; /* purple-60 */
+  --cat-4: #9dd44f; /* lemon-60 */
+  --cat-5: #bbb4b4; /* neutral-60 */
+
+  --ordinal-1: #e8c5f2; /* purple-20 · rosa lavanda, no blanco */
+  --ordinal-2: #d59be6; /* purple-40 */
+  --ordinal-3: #c072db; /* purple-60 */
+  --ordinal-4: #aa49ca; /* purple-80 */
+  --ordinal-5: #722f8f; /* purple-100 */
+  --ordinal-6: #908989; /* neutral-80 · fuera de rampa */
+
+  --ordinal-p-1: #ccc4e0; /* violet-20 */
+  --ordinal-p-2: #a492c5; /* violet-40 */
+  --ordinal-p-3: #7460ab; /* violet-60 */
+  --ordinal-p-4: #908989; /* neutral-80 · fuera de rampa */
+
+  --sobre-ordinal-1: #2d1d5d;
+  --sobre-ordinal-2: #2d1d5d;
+  --sobre-ordinal-3: #2d1d5d;
+  --sobre-ordinal-4: #ffffff;
+  --sobre-ordinal-5: #ffffff;
+  --sobre-ordinal-6: #ffffff;
+  --sobre-ordinal-p-1: #2d1d5d;
+  --sobre-ordinal-p-2: #2d1d5d;
+  --sobre-ordinal-p-3: #ffffff;
+  --sobre-ordinal-p-4: #ffffff;
+
+  --banda-1-ink: #55ab78; /* green-60 */
+  --banda-2-ink: #85c9a1; /* green-40 */
+  --banda-3-ink: #04d1cd; /* turquoise-80 */
+  --banda-4-ink: #a492c5; /* violet-40 */
+  --banda-5-ink: #ccc4e0; /* violet-20 */
+  --banda-6-ink: #d59be6; /* purple-40 */
+}
+
+/* Los tokens del tema expuestos a Tailwind (bg-papel, text-ink, border-border…).
+   Van `inline` para que se resuelvan en cada visita y no se congelen al
+   compilar. */
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-papel: var(--papel);
+  --color-pista: var(--pista);
+  --color-pista-2: var(--pista-2);
+  --color-border: var(--border);
+  --color-grid: var(--grid);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-tinta-marca: var(--tinta-marca);
+  --color-marca: var(--marca);
+  --color-acento: var(--acento);
+  --color-positivo-ink: var(--positivo-ink);
+  --color-negativo-ink: var(--negativo-ink);
+  --color-advertencia-ink: var(--advertencia-ink);
+  --color-alerta-ink: var(--alerta-ink);
+  --color-error-ink: var(--error-ink);
+  --color-turquoise-ink: var(--turquoise-ink);
+  --color-lemon-ink: var(--lemon-ink);
+  --color-estimulo-a: var(--estimulo-a);
+  --color-estimulo-b: var(--estimulo-b);
+
+  --font-heading: var(--font-poppins);
+  --font-body: var(--font-hind);
+}
+
+/* ── LA LÁMINA GUARDA SU PROPORCIÓN EN CUALQUIER PANTALLA ────────────────────
+   Todo el reporte se mide en rem (Tailwind, la escala fluida, los aros, el
+   waffle, las alturas de las gráficas), y un rem es la letra de la raíz. Con
+   la raíz fija en 16px, en un monitor grande o con el navegador alejado el
+   ancho de la lámina crecía y la letra y las gráficas no: todo salía chico y
+   con huecos arriba y abajo. Pasó con un operador presentando (2026-09).
+
+   La raíz crece con el ANCHO a partir de 1920, la pantalla de referencia: de
+   ahí para arriba la lámina se ve igual, y alejar el navegador ya no la
+   deforma. Sólo el ancho, no el alto: la lámina crece hacia abajo con scroll
+   (así se trabaja aquí), y atarla también al alto dejaba el arreglo a medias
+   con el navegador en ventana.
+
+   El piso de 16px es a propósito: por debajo de 1920 (laptops, celular, las
+   fotos y el PDF, que se toman a 1600) nada cambia, y acercar el navegador
+   sigue agrandando la letra. El techo es una pantalla 4K al 100%.
+
+   Por eso ningún tamaño va en px: un px no crece con la pantalla. Se escribe
+   en rem (`text-[0.6875rem]`, no `text-[11px]`). Bordes y filetes de 1 a 3px
+   se quedan en px: son trazo, no tamaño. `pnpm auditar:tokens` lo caza. */
+html {
+  font-size: clamp(16px, 100vw / 120, 32px);
+}
+
+body {
+  font-family: var(--font-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+}
+
+/* Los kickers van en MAYÚSCULAS, con letra muy espaciada y en el morado claro
+   de la casa (Purple). Eran turquesa, por la guía; la casa casi no usa el
+   turquesa y en pantalla se leía azul, así que se cambió (decisión de Héctor,
+   2026-09). El token voltea con el tema (purple-80 en claro, purple-60 en
+   oscuro). Sobre una lámina de color va el paso 60 directo: el 80 no despega
+   del morado del fondo. */
+.kicker-marca {
+  color: var(--kicker);
+}
+.kicker-marca-claro {
+  color: var(--color-purple-60);
+}
+
+/* Los glifos de significancia son los PNG de la casa (los triángulos de
+   contorno redondeado de la leyenda), no el carácter ▲. El PNG se usa como
+   MOLDE y el color lo pone el token: en claro sale idéntico a la imagen, y en
+   oscuro el de perfil se aclara, que con el PNG tal cual se perdía en el papel
+   hondo. Vienen de la base de reportes; una propuesta no los usa. */
+.glifo-significancia {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 0.85em;
+  height: 0.85em;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+.glifo-demografico {
+  -webkit-mask-image: url("/significancia/demografico.png");
+  mask-image: url("/significancia/demografico.png");
+  background-color: var(--signif-demografico);
+}
+.glifo-perfil {
+  -webkit-mask-image: url("/significancia/perfil.png");
+  mask-image: url("/significancia/perfil.png");
+  background-color: var(--signif-perfil);
+}
+
+/* ── Artes por tema ────────────────────────────────────────────────────────
+   Un arte que existe en versión clara y oscura (el logo de la barra) se
+   monta DOS veces y el tema decide cuál se ve. Es CSS y no una condición en
+   React porque el tema cambia sin re-render: un atributo en <html> basta. */
+:root[data-theme="oscuro"] .solo-en-claro {
+  display: none !important;
+}
+:root:not([data-theme="oscuro"]) .solo-en-oscuro {
+  display: none !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   FONDOS DE LÁMINA
+   ═══════════════════════════════════════════════════════════════════════════
+
+   Un color plano se lee como un vacío a escala de lámina completa: toda
+   superficie de color lleva dos luces radiales sobre una base angulada.
+
+   Los de COLOR (primary, secondary, marino, ink) son la marca y no cambian con
+   el tema: ya son oscuros. Los CLAROS (surface, surface-alt) son el papel y sí
+   voltean, con su par declarado justo debajo. Ver el catálogo HTML, sección 4. */
+
+.card-bg-primary {
+  background-image:
+    radial-gradient(ellipse 120% 80% at 85% -10%, color-mix(in oklab, var(--color-secondary) 55%, transparent), transparent),
+    radial-gradient(ellipse 100% 60% at -10% 110%, color-mix(in oklab, var(--color-turquoise) 25%, transparent), transparent),
+    linear-gradient(160deg, var(--color-primary), var(--color-primary-900));
+}
+.card-bg-secondary {
+  background-image:
+    radial-gradient(ellipse 110% 70% at -10% -10%, color-mix(in oklab, var(--color-primary) 60%, transparent), transparent),
+    radial-gradient(ellipse 90% 60% at 110% 110%, color-mix(in oklab, var(--color-turquoise) 30%, transparent), transparent),
+    linear-gradient(160deg, var(--color-secondary), var(--color-purple-100));
+}
+.card-bg-marino {
+  /* El Gradient Turquoise de la guía (turquesa → violeta), sostenido oscuro
+     para que el texto blanco se lea con holgura. El turquesa de marca lleva
+     texto oscuro y en una lámina densa los encabezados se perdían; aquí entra
+     como luz y como arranque, no como superficie. */
+  background-image:
+    radial-gradient(ellipse 110% 70% at 92% -10%, color-mix(in oklab, var(--color-turquoise) 22%, transparent), transparent),
+    radial-gradient(ellipse 90% 60% at -10% 110%, color-mix(in oklab, var(--color-secondary) 16%, transparent), transparent),
+    linear-gradient(160deg, var(--color-turquoise-100), var(--color-primary-900));
+}
+.card-bg-ink {
+  /* Violet 100 FIJO, no var(--ink): --ink es TEXTO y se voltea a claro en tema
+     oscuro. Cuando esta lámina lo usaba de fondo, el cierre salía lavanda con
+     texto blanco encima: ilegible. Las láminas de color no siguen al tema. */
+  background-image:
+    radial-gradient(ellipse 90% 60% at 80% 0%, color-mix(in oklab, var(--color-primary) 60%, transparent), transparent),
+    radial-gradient(ellipse 70% 50% at 10% 100%, color-mix(in oklab, var(--color-secondary) 30%, transparent), transparent),
+    linear-gradient(180deg, var(--color-primary-900), #140d2a);
+}
+/* El turquesa NO es fondo de lámina: la guía lo reserva a acentos. La clase
+   se conserva por compatibilidad y pinta como primary. */
+.card-bg-turquoise {
+  background-image:
+    radial-gradient(ellipse 120% 80% at 85% -10%, color-mix(in oklab, var(--color-secondary) 55%, transparent), transparent),
+    radial-gradient(ellipse 100% 60% at -10% 110%, color-mix(in oklab, var(--color-turquoise) 25%, transparent), transparent),
+    linear-gradient(160deg, var(--color-primary), var(--color-primary-900));
+}
+
+/* Las láminas de datos. La marca vive sobre blanco: la guía es explícita
+   (fondos blancos o pasos 10/20 de una escala). Antes esta clase llevaba
+   radiales de morado y turquesa que teñían la lámina de lavanda a menta: se
+   veía bonito suelto y contaminaba todas las gráficas encima, que es donde el
+   color sí tiene que significar algo. */
+.card-bg-surface {
+  background-color: var(--color-violet-10);
+  background-image: linear-gradient(160deg, #ffffff 0%, var(--color-violet-10) 62%, var(--color-violet-20) 100%);
+}
+/* Su par en oscuro: el mismo ritmo con la escala invertida, un tinte violeta
+   hondo que no es negro plano. */
+:root[data-theme="oscuro"] .card-bg-surface {
+  background-color: var(--surface);
+  background-image: linear-gradient(160deg, color-mix(in oklab, var(--color-violet-100) 90%, var(--page)) 0%, var(--surface) 62%, var(--page) 100%);
+}
+
+/* El SEGUNDO tono claro. Existe para que doce láminas de datos seguidas no se
+   lean como la misma lámina: el texto sigue siendo oscuro, así que ninguna
+   gráfica pierde contraste; lo único que cambia es el papel. */
+/* El piso es violet-10, no violet-20: con el 20 de fondo y la luz de violet-40
+   encima, el texto tenue medía 3 de contraste en la esquina más cargada. */
+.card-bg-surface-alt {
+  background-color: var(--color-violet-10);
+  background-image:
+    radial-gradient(ellipse 90% 60% at 100% 0%, color-mix(in oklab, var(--color-violet-40) 35%, transparent), transparent),
+    linear-gradient(160deg, var(--color-violet-10) 0%, color-mix(in oklab, var(--color-violet-20) 60%, var(--color-violet-10)) 100%);
+}
+:root[data-theme="oscuro"] .card-bg-surface-alt {
+  background-color: var(--surface-2);
+  background-image:
+    radial-gradient(ellipse 90% 60% at 100% 0%, color-mix(in oklab, var(--color-violet-80) 35%, transparent), transparent),
+    linear-gradient(160deg, color-mix(in oklab, var(--color-violet-100) 60%, var(--surface-2)) 0%, var(--surface-2) 100%);
+}
+
+/* Texto con degradado de marca: el Gradient Turquoise de la guía corriendo por
+   la tipografía, como en las portadas del deck de referencia. */
+.brand-gradient-text {
+  /* El recorte a la tipografía se come lo que sobresale de la caja de línea:
+     con interlineado apretado, la "g" y la "p" quedaban rebanadas. */
+  padding-bottom: 0.12em;
+  line-height: 1.12;
+  background-image: linear-gradient(100deg, var(--color-turquoise) 0%, var(--color-secondary) 45%, var(--color-primary) 90%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* El mismo tratamiento, para fondos MORADOS: el de arriba termina en el
+   primario, que sobre una lámina morada desaparece. Éste corre entre los dos
+   colores que sí despegan de ese fondo, con blanco al centro. */
+.brand-gradient-text-sobre-morado {
+  background-image: linear-gradient(95deg, var(--color-turquoise) 0%, var(--color-sobre-relleno) 48%, var(--color-lemon) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.brand-corner-glow {
+  position: absolute;
+  pointer-events: none;
+  inset-inline-end: 0;
+  inset-block-start: 0;
+  width: min(38vw, 520px);
+  aspect-ratio: 1;
+  background-image:
+    radial-gradient(ellipse at 70% 20%, color-mix(in oklab, var(--color-secondary) 22%, transparent), transparent 62%),
+    radial-gradient(ellipse at 95% 0%, color-mix(in oklab, var(--color-turquoise) 18%, transparent), transparent 58%);
+}
+
+/* El grano: un SVG de ruido fractal al 5%. Es la diferencia entre "degradado"
+   y "diseñado". Va como <div aria-hidden> encima del fondo y debajo del
+   contenido. */
+.card-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOVIMIENTO
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* La capa de ambiente: formas que caen despacio. Es lo único que se mueve en
+   bucle, así que es lo primero que se apaga con prefers-reduced-motion. */
+@keyframes note-fall {
+  0% {
+    transform: translateY(-10%) translateX(0) rotate(-6deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: var(--note-peak, 1);
+  }
+  90% {
+    opacity: var(--note-peak, 1);
+  }
+  100% {
+    transform: translateY(110vh) translateX(var(--note-drift, 0px)) rotate(10deg);
+    opacity: 0;
+  }
+}
+.note-fall {
+  animation-name: note-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+/* Con movimiento reducido (y en el PDF y las fotos, que lo fuerzan) la lluvia
+   se PAUSA, no se apaga: cada forma trae un retraso negativo distinto, así que
+   pausada queda repartida por la lámina como en cualquier instante del bucle.
+   Con `animation: none` todas se reiniciaban en su posición inicial y salían
+   apiladas en una fila arriba (lo cazó la foto de auditoría). */
+@media (prefers-reduced-motion: reduce) {
+  .note-fall {
+    animation-play-state: paused;
+  }
+}
+
+/* Revelado escalonado de listas y rejillas. Se dispara cuando la lámina ENTRA
+   A LA VISTA (`.a-la-vista`, que pone el shell), no al montarse: en el
+   recorrido vertical todas las láminas existen desde el primer cuadro. Si la
+   marca nunca llega, el elemento se queda en su estado final. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.a-la-vista .stagger > * {
+  animation: rise-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.a-la-vista .stagger > *:nth-child(1) { animation-delay: 0.04s; }
+.a-la-vista .stagger > *:nth-child(2) { animation-delay: 0.08s; }
+.a-la-vista .stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.a-la-vista .stagger > *:nth-child(4) { animation-delay: 0.16s; }
+.a-la-vista .stagger > *:nth-child(5) { animation-delay: 0.2s; }
+.a-la-vista .stagger > *:nth-child(6) { animation-delay: 0.24s; }
+.a-la-vista .stagger > *:nth-child(7) { animation-delay: 0.28s; }
+.a-la-vista .stagger > *:nth-child(8) { animation-delay: 0.32s; }
+.a-la-vista .stagger > *:nth-child(9) { animation-delay: 0.36s; }
+.a-la-vista .stagger > *:nth-child(n + 10) { animation-delay: 0.4s; }
+
+/* Las barras crecen desde cero al entrar: el valor se lee como "medido". */
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+.a-la-vista .grow-bar {
+  transform-origin: left center;
+  animation: grow-x 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+/* Una barra anclada a la DERECHA (el lado izquierdo de un espejo o un duelo)
+   crece hacia la izquierda: el origen va del otro lado, o a medio camino la
+   barra se despega de su borde y flota al centro. */
+.a-la-vista .grow-bar-derecha {
+  transform-origin: right center;
+}
+
+/* El marcador de un slider (`SliderPorMarca`) llega deslizándose desde la
+   izquierda de su propia posición, no desde el borde de la regla: veinte
+   marcadores viajando cada uno su tramo corto se ven parejos; todos desde el
+   borde serían veinte carreras de largo distinto. */
+@keyframes bolita-llega {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+}
+.a-la-vista .bolita-que-llega {
+  animation: bolita-llega 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--retraso, 0s);
+}
+
+/* Un arco (dona, medidor) se dibuja al entrar a la vista. `--retraso` lo
+   escalona cuando hay varios (los anillos de progreso). */
+.a-la-vista .arco-que-cierra {
+  animation: cierra-arco 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--retraso, 0s);
+}
+@keyframes cierra-arco {
+  from {
+    stroke-dasharray: 0 999;
+  }
+}
+
+/* El abanico (`AbanicoDeSectores`): cada aspa crece desde el centro hacia
+   afuera, de la menor a la mayor, en el orden en que se pintan. El origen de
+   la escala es el centro del abanico, no el de cada aspa, así que viaja por
+   variable (`--abanico-cx/cy`, en las unidades del propio SVG). */
+.a-la-vista .abanico-sector {
+  transform-origin: var(--abanico-cx, 50%) var(--abanico-cy, 50%);
+  animation: abanico-crece 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--retraso, 0s);
+}
+@keyframes abanico-crece {
+  from {
+    transform: scale(0);
+  }
+}
+
+/* El tintineo: un anillo que respira para decir "esto se puede tocar" sin
+   una etiqueta. Corre mientras está montado (el lector duda en hacer clic con
+   la lámina ya a la vista, no sólo al entrar) y se apaga al elegir algo. */
+@keyframes tintineo {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--color-tintineo, var(--marca)) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 8px color-mix(in oklab, var(--color-tintineo, var(--marca)) 0%, transparent);
+  }
+}
+.tintineo {
+  animation: tintineo 1.8s ease-in-out infinite;
+}
+
+/* El mosaico: cada baldosa aparece con un "pop", una tras otra y de la mayor
+   a la menor. Más lento que `.stagger` a propósito: ahí el ritmo es detalle,
+   aquí el ritmo de aparición es el argumento. */
+@keyframes baldosa-aparece {
+  from {
+    opacity: 0;
+    transform: scale(0.82);
+  }
+}
+.a-la-vista .baldosa-que-aparece {
+  animation: baldosa-aparece 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation-delay: var(--retraso, 0s);
+}
+
+/* El waffle: cada punto lleno se prende con un retraso por índice, en el
+   mismo orden en que se lee. Los apagados (la pista) no animan: son el fondo,
+   no el dato. */
+.a-la-vista .punto-que-aparece {
+  animation: punto-aparece 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--retraso, 0s);
+}
+@keyframes punto-aparece {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+/* Una línea que avanza y va encendiendo pasos (la dinámica de la entrevista). */
+.a-la-vista .linea-que-avanza {
+  animation: avanza-linea 2.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+@keyframes avanza-linea {
+  from {
+    transform: scale(0);
+  }
+}
+.a-la-vista .paso-que-se-enciende {
+  animation: enciende-paso 0.5s ease both;
+  animation-delay: var(--enciende, 0s);
+}
+@keyframes enciende-paso {
+  from {
+    opacity: 0.3;
+    filter: grayscale(1);
+  }
+}
+
+/* El revelado de la portada: cada palabra sube desde una máscara. */
+.palabra-mascara {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.palabra-revelada {
+  display: inline-block;
+  transform: translateY(110%) rotate(4deg);
+  opacity: 0;
+  animation: revela-palabra 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: var(--retraso, 0s);
+}
+@keyframes revela-palabra {
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Pieza decorativa que gira lento: decoración, nunca información. */
+@keyframes acetato-gira {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.acetato-gira {
+  animation: acetato-gira 14s linear infinite;
+}
+
+/* El índice entra deslizándose desde su borde: se lee como un cajón que se
+   abre, no como una capa que tapó el reporte. */
+@keyframes cajon-entra {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+.cajon-entra {
+  animation: cajon-entra 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* La pista de teclas se retira sola: a los siete segundos ya se leyó o ya no
+   se va a leer, y estorbaría el resto del recorrido. Faltaba esta regla en la
+   base y la pista se quedaba fija en los dashboards del equipo. */
+.pista-teclas {
+  animation: desvanece-pista 0.6s ease 7s forwards;
+}
+@keyframes desvanece-pista {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Los selectores repiten `.a-la-vista` a propósito: la regla que enciende la
+   animación es `.a-la-vista .grow-bar` y una de menor peso (`.grow-bar` a
+   secas) no la apagaba. Así la cámara pescaba las barras a media animación
+   de crecimiento, y la barra anclada a la derecha se veía flotando al centro
+   (lo cazó el analista en una foto). */
+@media (prefers-reduced-motion: reduce) {
+  .a-la-vista .stagger > *,
+  .a-la-vista .grow-bar,
+  .a-la-vista .arco-que-cierra,
+  .a-la-vista .linea-que-avanza,
+  .a-la-vista .paso-que-se-enciende,
+  .a-la-vista .bolita-que-llega,
+  .a-la-vista .abanico-sector,
+  .a-la-vista .baldosa-que-aparece,
+  .a-la-vista .punto-que-aparece,
+  .tintineo,
+  .acetato-gira,
+  .cajon-entra {
+    animation: none;
+  }
+  .palabra-revelada {
+    animation: none;
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   EL RECORRIDO
+   ═══════════════════════════════════════════════════════════════════════════
+   El anclaje es SUAVE en todas partes, nunca obligatorio. Con `mandatory`
+   cada golpe de rueda se convertía en un salto de lámina completa y en las
+   láminas de datos, que miden dos y tres pantallas, peleaba contra la lectura
+   a media gráfica. La clase del contenedor declara snap-mandatory; esto la
+   corrige en un solo lugar. */
+.recorrido {
+  scroll-behavior: smooth;
+  scroll-snap-type: y proximity !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .recorrido {
+    scroll-behavior: auto;
+  }
+}
+
+/* ── Impresión del navegador ────────────────────────────────────────────────
+   El PDF que se entrega NO sale de aquí: lo genera `pnpm pdf` fotografiando
+   cada lámina. Esto sólo evita que un Ctrl+P accidental estampe los mandos. */
+@media print {
+  .mando-oculto-al-imprimir,
+  .solo-en-pantalla {
+    display: none !important;
+  }
+  .solo-en-papel {
+    display: flex !important;
+  }
+  .note-fall,
+  .card-grain {
+    display: none !important;
+  }
+}

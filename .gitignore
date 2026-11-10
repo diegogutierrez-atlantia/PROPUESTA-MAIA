@@ -1,0 +1,40 @@
+# Ignorados de la raíz del repo.
+#
+# `frontend/` tiene el suyo, con lo del proyecto (node_modules, .next, .env,
+# entradas). Éste cubre lo que puede aparecer suelto aquí arriba.
+
+# Credenciales. Nunca, en ninguna carpeta, con ningún nombre.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# El crudo del estudio, si alguien lo deja fuera de frontend/ por error.
+complemento/
+datos-crudos/
+
+# Archivos de estudio que no son del repo base: cuestionarios, presentaciones,
+# tabulados. El material de un cliente no viaja dentro del repo que clonan ocho
+# personas.
+*.xlsx
+*.xls
+*.xlsm
+*.pptx
+*.docx
+*.sav
+
+
+# Notas de trabajo y feedback de pilotos. Son material de mejora del repo, no
+# material del repo: nadie que arranque un estudio necesita leerlas.
+Feedback*.txt
+feedback*.txt
+notas-*.md
+
+# Sistema operativo y editores
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+*.swp
+*~

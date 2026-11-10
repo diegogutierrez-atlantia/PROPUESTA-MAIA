@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catálogo de colores · Atlantia dashboards</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Hind:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --violet-100:#2d1d5d; --violet-80:#482f91; --violet-60:#7460ab; --violet-40:#a492c5; --violet-20:#ccc4e0; --violet-10:#e5e0f2;
+          --purple-100:#722f8f; --purple-80:#aa49ca; --purple-60:#c072db; --purple-40:#d59be6; --purple-20:#e8c5f2; --purple-10:#f4e0f9;
+          --turquoise-100:#028b89; --turquoise-80:#04d1cd; --turquoise-60:#3ddbd8; --turquoise-40:#7de9e7; --turquoise-20:#b0f2f0; --turquoise-10:#d8f8f7;
+          --lemon-100:#4a7a0b; --lemon-80:#77c014; --lemon-60:#9dd44f; --lemon-40:#bde28a; --lemon-20:#d8f0bb; --lemon-10:#edfadb;
+          --neutral-100:#656060; --neutral-80:#908989; --neutral-60:#bbb4b4; --neutral-40:#d5d1d1; --neutral-20:#eae8e8; --neutral-10:#f5f4f4;
+          --green-100:#1a5a32; --green-80:#2a9152; --green-60:#55ab78; --green-40:#85c9a1; --green-20:#b5e0c8; --green-10:#daf0e3;
+          --yellow-100:#7a5400; --yellow-80:#c8a000; --yellow-60:#dfbe40; --yellow-40:#edda80; --yellow-20:#f5ecba; --yellow-10:#faf5dc;
+          --orange-100:#7a3200; --orange-80:#d05000; --orange-60:#e07830; --orange-40:#eda070; --orange-20:#f5c8a8; --orange-10:#fbe4d2;
+          --red-100:#7a0e1c; --red-80:#c41230; --red-60:#d84055; --red-40:#e87888; --red-20:#f4b0ba; --red-10:#fad8dc;
+          /* Los tres neutros del tema oscuro: violet-100 mezclado con negro. No son de la guía porque la guía no contempla tema oscuro; se derivan del morado de la casa y no de un gris cualquiera. */
+          --oscuro-page:#140d2a; --oscuro-surface:#201543; --oscuro-surface-2:#26194f; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Hind, system-ui, sans-serif; color:#2d1d5d; background:#ffffff; line-height:1.5; }
+  h1,h2,h3,h4 { font-family: Poppins, sans-serif; margin:0; }
+  h1 { font-size:34px; font-weight:800; }
+  h2 { font-size:22px; font-weight:700; margin-top:56px; padding-top:16px; border-top:1px solid #e5e0f2; }
+  h3 { font-size:15px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; color:#aa49ca; margin:28px 0 10px; }
+  p  { max-width:78ch; color:#656060; }
+  .lede { font-size:18px; color:#2d1d5d; }
+  main { padding: 40px clamp(20px, 4vw, 64px) 96px; }
+  .escalas { display:grid; gap:10px; }
+  .escala { display:grid; grid-template-columns: 110px repeat(6, 1fr); gap:6px; align-items:stretch; }
+  .escala .nom { font-family:Poppins; font-weight:700; font-size:13px; align-self:center; }
+  .paso { border-radius:8px; padding:10px 8px 8px; font-size:11px; min-height:58px; display:flex; flex-direction:column; justify-content:flex-end; font-family:Poppins; font-weight:600; }
+  .paso small { display:block; font-weight:400; opacity:.85; }
+  .par { display:grid; grid-template-columns: 1fr 1fr; gap:0; border-radius:14px; overflow:hidden; border:1px solid #e5e0f2; margin:14px 0 26px; }
+  .lado { padding:22px 24px; }
+  .lado.claro { background:#f5f4f4; color:#2d1d5d; }
+  .lado.oscuro { background:var(--oscuro-page); color:#e5e0f2; }
+  .lado h4 { font-size:12px; text-transform:uppercase; letter-spacing:.18em; opacity:.6; margin-bottom:14px; }
+  .fila { display:grid; grid-template-columns: 190px 1fr; gap:10px; align-items:center; padding:7px 0; border-top:1px solid rgba(128,128,128,.18); }
+  .fila:first-of-type { border-top:none; }
+  .token { font-family: ui-monospace, Consolas, monospace; font-size:12px; }
+  .token b { display:block; font-family:Hind; font-weight:600; font-size:13px; }
+  .sw { display:flex; align-items:center; gap:10px; font-size:12px; }
+  .sw i { display:inline-block; width:44px; height:28px; border-radius:6px; border:1px solid rgba(128,128,128,.25); }
+  .sw code { font-family: ui-monospace, Consolas, monospace; font-size:11px; opacity:.85; }
+  .muestra { margin-top:16px; padding:16px; border-radius:12px; }
+  .barra { height:14px; border-radius:99px; margin:6px 0; overflow:hidden; }
+  .barra > span { display:block; height:100%; border-radius:99px; }
+  .fondos { display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
+  .fondo { border-radius:14px; overflow:hidden; border:1px solid #e5e0f2; }
+  .fondo .cara { height:150px; padding:16px; font-family:Poppins; font-weight:700; position:relative; }
+  .fondo .cara small { display:block; font-family:Hind; font-weight:400; font-size:12px; opacity:.75; }
+  .fondo .pie { padding:10px 14px; font-size:12px; color:#656060; background:#fff; }
+  .nota { background:#e5e0f2; border-left:4px solid #482f91; padding:12px 16px; border-radius:8px; margin:18px 0; max-width:none; color:#2d1d5d; }
+  .chip { display:inline-block; padding:3px 10px; border-radius:99px; font-family:Poppins; font-weight:700; font-size:11px; color:#fff; margin-right:6px; }
+  table { border-collapse:collapse; width:100%; font-size:13px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid #eae8e8; vertical-align:top; }
+  th { font-family:Poppins; font-size:11px; text-transform:uppercase; letter-spacing:.12em; color:#656060; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Catálogo de colores del dashboard</h1>
+  <p class="lede">Todo color que se pinta en un reporte sale de aquí. Cada token tiene su valor en tema claro y su valor en tema oscuro, y los dos son pasos de las escalas oficiales de Atlantia. No se inventan tonos.</p>
+  <div class="nota">
+    <b>Las tres reglas.</b> (1) El morado manda: Violet es el protagonista. (2) Turquesa, púrpura y limón son acentos, nunca fondos de lámina. (3) Si falta un tono, se toma el paso más cercano de la escala; no se interpola.
+    <br><b>Lo único que no está en la guía</b> es el papel del tema oscuro, porque la guía no contempla tema oscuro. Se deriva de Violet 100 mezclado con negro, para que el oscuro siga siendo morado y no un gris de sistema.
+  </div>
+
+  <h2>1 · Las escalas oficiales (guía de marca, GAIA)</h2>
+  <p>Seis pasos por color: 100 el más oscuro, 10 el más claro. El paso 80 es el color de identidad.</p>
+  <div class="escalas" id="escalas"></div>
+
+  <h2>2 · Papel y tinta</h2>
+  <p>Los neutrales del reporte. En claro, la marca vive sobre blanco y los grises salen de la escala Neutral. En oscuro, el papel es morado profundo y la tinta sube a los pasos claros de Violet.</p>
+  <div class="par">
+    <div class="lado claro"><h4>Tema claro</h4>
+      <div class="fila"><div class="token"><b>Página</b>--page</div><div class="sw"><i style="background:#f5f4f4"></i><code>neutral-10 · #f5f4f4</code></div></div>
+      <div class="fila"><div class="token"><b>Tarjeta / papel</b>--surface · --papel</div><div class="sw"><i style="background:#ffffff"></i><code>blanco · #ffffff</code></div></div>
+      <div class="fila"><div class="token"><b>Tarjeta secundaria</b>--surface-2</div><div class="sw"><i style="background:#e5e0f2"></i><code>violet-10 · #e5e0f2</code></div></div>
+      <div class="fila"><div class="token"><b>Tinta principal</b>--ink · --tinta-marca</div><div class="sw"><i style="background:#2d1d5d"></i><code>violet-100 · #2d1d5d</code></div></div>
+      <div class="fila"><div class="token"><b>Tinta de cuerpo</b>--ink-2</div><div class="sw"><i style="background:#656060"></i><code>neutral-100 · #656060</code></div></div>
+      <div class="fila"><div class="token"><b>Tinta tenue</b>--muted</div><div class="sw"><i style="background:#656060"></i><code>neutral-100 · #656060</code></div></div>
+      <div class="fila"><div class="token"><b>Serie atenuada</b>--atenuado</div><div class="sw"><i style="background:#908989"></i><code>neutral-80 · #908989</code></div></div>
+      <div class="fila"><div class="token"><b>Kicker</b>.kicker-marca</div><div class="sw"><i style="background:#aa49ca"></i><code>purple-80 · #aa49ca</code></div></div>
+      <div class="fila"><div class="token"><b>Acento (lo que se destaca)</b>--acento</div><div class="sw"><i style="background:#aa49ca"></i><code>purple-80 · #aa49ca</code></div></div>
+      <div class="fila"><div class="token"><b>Significancia demográfica</b>--signif-demografico</div><div class="sw"><i style="background:#919ba8"></i><code>el gris del PNG · #919ba8</code></div></div>
+      <div class="fila"><div class="token"><b>Significancia de perfil</b>--signif-perfil</div><div class="sw"><i style="background:#36236d"></i><code>el violeta del PNG · #36236d</code></div></div>
+      <div class="fila"><div class="token"><b>Pista (carril vacío)</b>--pista</div><div class="sw"><i style="background:#d5d1d1"></i><code>neutral-40 · #d5d1d1</code></div></div>
+      <div class="fila"><div class="token"><b>Pista 2</b>--pista-2</div><div class="sw"><i style="background:#bbb4b4"></i><code>neutral-60 · #bbb4b4</code></div></div>
+      <div class="fila"><div class="token"><b>Borde / rejilla</b>--border · --grid</div><div class="sw"><i style="background:#d5d1d1"></i><code>neutral-40 · #d5d1d1</code></div></div>
+      <div class="muestra" style="background:#fff;border:1px solid #eae8e8">
+        <div style="font-family:Poppins;font-weight:700;font-size:20px;color:#2d1d5d">Título en tinta principal</div>
+        <div style="color:#656060">Cuerpo del texto en neutral 100. Se lee sin ser negro.</div>
+        <div style="color:#908989;font-size:12px">Fuente y bases en neutral 80.</div>
+        <div style="color:#028b89;font-family:Poppins;font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-top:8px">Kicker en purple 80 (era turquesa; decisión de la casa, 2026-09)</div>
+      </div>
+    </div>
+    <div class="lado oscuro"><h4>Tema oscuro</h4>
+      <div class="fila"><div class="token"><b>Página</b>--page</div><div class="sw"><i style="background:#140d2a"></i><code>violet-100 al 45% s/ negro · #140d2a</code></div></div>
+      <div class="fila"><div class="token"><b>Tarjeta / papel</b>--surface · --papel</div><div class="sw"><i style="background:#201543"></i><code>violet-100 al 72% s/ negro · #201543</code></div></div>
+      <div class="fila"><div class="token"><b>Tarjeta secundaria</b>--surface-2</div><div class="sw"><i style="background:#26194f"></i><code>violet-100 al 85% s/ negro · #26194f</code></div></div>
+      <div class="fila"><div class="token"><b>Tinta principal</b>--ink</div><div class="sw"><i style="background:#e5e0f2"></i><code>violet-10 · #e5e0f2</code></div></div>
+      <div class="fila"><div class="token"><b>Tinta de marca</b>--tinta-marca</div><div class="sw"><i style="background:#ccc4e0"></i><code>violet-20 · #ccc4e0</code></div></div>
+      <div class="fila"><div class="token"><b>Tinta de cuerpo</b>--ink-2</div><div class="sw"><i style="background:#ccc4e0"></i><code>violet-20 · #ccc4e0</code></div></div>
+      <div class="fila"><div class="token"><b>Tinta tenue</b>--muted</div><div class="sw"><i style="background:#a492c5"></i><code>violet-40 · #a492c5</code></div></div>
+      <div class="fila"><div class="token"><b>Serie atenuada</b>--atenuado</div><div class="sw"><i style="background:#908989"></i><code>neutral-80 · #908989</code></div></div>
+      <div class="fila"><div class="token"><b>Kicker</b>.kicker-marca</div><div class="sw"><i style="background:#c072db"></i><code>purple-60 · #c072db</code></div></div>
+      <div class="fila"><div class="token"><b>Acento (lo que se destaca)</b>--acento</div><div class="sw"><i style="background:#c072db"></i><code>purple-60 · #c072db</code></div></div>
+      <div class="fila"><div class="token"><b>Significancia demográfica</b>--signif-demografico</div><div class="sw"><i style="background:#919ba8"></i><code>el gris del PNG · #919ba8</code></div></div>
+      <div class="fila"><div class="token"><b>Significancia de perfil</b>--signif-perfil</div><div class="sw"><i style="background:#ccc4e0"></i><code>violet-20 · #ccc4e0</code></div></div>
+      <div class="fila"><div class="token"><b>Pista (carril vacío)</b>--pista</div><div class="sw"><i style="background:rgba(229,224,242,.12)"></i><code>violet-10 al 12%</code></div></div>
+      <div class="fila"><div class="token"><b>Pista 2</b>--pista-2</div><div class="sw"><i style="background:rgba(229,224,242,.22)"></i><code>violet-10 al 22%</code></div></div>
+      <div class="fila"><div class="token"><b>Borde / rejilla</b>--border · --grid</div><div class="sw"><i style="background:rgba(229,224,242,.12)"></i><code>violet-10 al 12%</code></div></div>
+      <div class="muestra" style="background:#201543;border:1px solid rgba(229,224,242,.12)">
+        <div style="font-family:Poppins;font-weight:700;font-size:20px;color:#e5e0f2">Título en tinta principal</div>
+        <div style="color:#ccc4e0">Cuerpo del texto en violet 20.</div>
+        <div style="color:#a492c5;font-size:12px">Fuente y bases en violet 40.</div>
+        <div style="color:#04d1cd;font-family:Poppins;font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-top:8px">Kicker en purple 60</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>3 · El color del dato</h2>
+  <h3>Los dos estímulos de una comparación</h3>
+  <p>El color sigue al estímulo en todo el reporte: si el primero es violeta en la lámina 9, es violeta en la 14.</p>
+  <div class="par">
+    <div class="lado claro"><h4>Tema claro</h4>
+      <div class="fila"><div class="token"><b>Estímulo A</b>--estimulo-a</div><div class="sw"><i style="background:#482f91"></i><code>violet-80 · #482f91</code></div></div>
+      <div class="fila"><div class="token"><b>Estímulo B</b>--estimulo-b</div><div class="sw"><i style="background:#aa49ca"></i><code>purple-80 · #aa49ca</code></div></div>
+      <div class="muestra" style="background:#fff;border:1px solid #eae8e8">
+        <div class="barra" style="background:#eae8e8"><span style="width:72%;background:#482f91"></span></div>
+        <div class="barra" style="background:#eae8e8"><span style="width:58%;background:#aa49ca"></span></div>
+      </div>
+    </div>
+    <div class="lado oscuro"><h4>Tema oscuro</h4>
+      <div class="fila"><div class="token"><b>Estímulo A</b>--estimulo-a</div><div class="sw"><i style="background:#7460ab"></i><code>violet-60 · #7460ab</code></div></div>
+      <div class="fila"><div class="token"><b>Estímulo B</b>--estimulo-b</div><div class="sw"><i style="background:#c072db"></i><code>purple-60 · #c072db</code></div></div>
+      <div class="muestra" style="background:#201543;border:1px solid rgba(229,224,242,.12)">
+        <div class="barra" style="background:rgba(229,224,242,.12)"><span style="width:72%;background:#7460ab"></span></div>
+        <div class="barra" style="background:rgba(229,224,242,.12)"><span style="width:58%;background:#c072db"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <h3>La escala ordinal (lo que tiene orden: edad, NSE, frecuencia, región)</h3>
+  <p>Un solo matiz, de más a menos. En claro es la escala Violet completa. En oscuro es la escala Purple, que es la hermana más luminosa: Violet sólo tiene tres pasos que se lean sobre fondo hondo, y el paso 10 se veía blanco (eso es lo que pasó en un reporte real). <b>El extremo alto nunca es blanco</b>: en oscuro es purple 20, un rosa lavanda. Y <b>el extremo bajo nunca es el paso 10</b>: sobre papel claro violet 10 no se percibe (lo cazó Héctor en esta revisión). La rampa tiene cinco pasos útiles; un sexto peldaño, si hace falta, va en neutro y fuera de rampa, que es la convención de la casa para lo que no es un escalón de la escala.</p>
+  <div class="par">
+    <div class="lado claro"><h4>Tema claro · Violet</h4>
+      <div class="muestra" style="background:#fff;border:1px solid #eae8e8">
+        <div class="barra" style="background:#eae8e8"><span style="width:95%;background:#2d1d5d"></span></div>
+        <div class="barra" style="background:#eae8e8"><span style="width:80%;background:#482f91"></span></div>
+        <div class="barra" style="background:#eae8e8"><span style="width:65%;background:#7460ab"></span></div>
+        <div class="barra" style="background:#eae8e8"><span style="width:50%;background:#a492c5"></span></div>
+        <div class="barra" style="background:#eae8e8"><span style="width:35%;background:#ccc4e0"></span></div>
+        <div class="barra" style="background:#eae8e8"><span style="width:20%;background:#d5d1d1"></span></div>
+        <div style="font-size:12px;color:#656060;margin-top:8px">--ordinal-1 … --ordinal-5 = violet 100, 80, 60, 40, 20 · --ordinal-6 = neutral 60, fuera de rampa</div>
+      </div>
+    </div>
+    <div class="lado oscuro"><h4>Tema oscuro · Purple</h4>
+      <div class="muestra" style="background:#201543;border:1px solid rgba(229,224,242,.12)">
+        <div class="barra" style="background:rgba(229,224,242,.12)"><span style="width:95%;background:#e8c5f2"></span></div>
+        <div class="barra" style="background:rgba(229,224,242,.12)"><span style="width:80%;background:#d59be6"></span></div>
+        <div class="barra" style="background:rgba(229,224,242,.12)"><span style="width:65%;background:#c072db"></span></div>
+        <div class="barra" style="background:rgba(229,224,242,.12)"><span style="width:50%;background:#aa49ca"></span></div>
+        <div class="barra" style="background:rgba(229,224,242,.12)"><span style="width:35%;background:#722f8f"></span></div>
+        <div class="barra" style="background:rgba(229,224,242,.12)"><span style="width:20%;background:#908989"></span></div>
+        <div style="font-size:12px;color:#a492c5;margin-top:8px">--ordinal-1 … --ordinal-5 = purple 20, 40, 60, 80, 100 · --ordinal-6 = neutral 80, fuera de rampa</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>La escala categórica (lo que no tiene orden: grupos de atributos, bloques, marcas)</h3>
+  <p>Hasta cinco categorías. Más de cinco es señal de que la gráfica está mal elegida. Ninguna es un color semántico: el verde, el amarillo, el naranja y el rojo <b>no</b> entran aquí porque significan "bien" o "mal", y un grupo de atributos no es ni bueno ni malo.</p>
+  <div class="par">
+    <div class="lado claro"><h4>Tema claro</h4>
+      <div class="fila"><div class="token"><b>Categoría 1</b>--cat-1</div><div class="sw"><i style="background:#482f91"></i><code>violet-80</code></div></div>
+      <div class="fila"><div class="token"><b>Categoría 2</b>--cat-2</div><div class="sw"><i style="background:#028b89"></i><code>turquoise-100</code></div></div>
+      <div class="fila"><div class="token"><b>Categoría 3</b>--cat-3</div><div class="sw"><i style="background:#aa49ca"></i><code>purple-80</code></div></div>
+      <div class="fila"><div class="token"><b>Categoría 4</b>--cat-4</div><div class="sw"><i style="background:#4a7a0b"></i><code>lemon-100</code></div></div>
+      <div class="fila"><div class="token"><b>Categoría 5</b>--cat-5</div><div class="sw"><i style="background:#908989"></i><code>neutral-80</code></div></div>
+    </div>
+    <div class="lado oscuro"><h4>Tema oscuro</h4>
+      <div class="fila"><div class="token"><b>Categoría 1</b>--cat-1</div><div class="sw"><i style="background:#a492c5"></i><code>violet-40</code></div></div>
+      <div class="fila"><div class="token"><b>Categoría 2</b>--cat-2</div><div class="sw"><i style="background:#04d1cd"></i><code>turquoise-80</code></div></div>
+      <div class="fila"><div class="token"><b>Categoría 3</b>--cat-3</div><div class="sw"><i style="background:#c072db"></i><code>purple-60</code></div></div>
+      <div class="fila"><div class="token"><b>Categoría 4</b>--cat-4</div><div class="sw"><i style="background:#9dd44f"></i><code>lemon-60</code></div></div>
+      <div class="fila"><div class="token"><b>Categoría 5</b>--cat-5</div><div class="sw"><i style="background:#bbb4b4"></i><code>neutral-60</code></div></div>
+    </div>
+  </div>
+
+  <h3>Polaridad y semáforo</h3>
+  <p>Lo que sube va en verde; lo que baja va en morado, no en rojo: un dato bajo no es una falla. El rojo se reserva para un error real de sistema. Cada uno tiene su versión de relleno (barra, chip) y su versión de tinta (texto).</p>
+  <div class="par">
+    <div class="lado claro"><h4>Tema claro</h4>
+      <div class="fila"><div class="token"><b>Positivo, relleno</b>--positivo</div><div class="sw"><i style="background:#2a9152"></i><code>green-80</code></div></div>
+      <div class="fila"><div class="token"><b>Positivo, tinta</b>--positivo-ink</div><div class="sw"><i style="background:#1a5a32"></i><code>green-100</code></div></div>
+      <div class="fila"><div class="token"><b>Negativo, relleno</b>--negativo</div><div class="sw"><i style="background:#aa49ca"></i><code>purple-80</code></div></div>
+      <div class="fila"><div class="token"><b>Negativo, tinta</b>--negativo-ink</div><div class="sw"><i style="background:#722f8f"></i><code>purple-100</code></div></div>
+      <div class="fila"><div class="token"><b>Advertencia</b>--advertencia · -ink</div><div class="sw"><i style="background:#c8a000"></i><i style="background:#7a5400"></i><code>yellow-80 · yellow-100</code></div></div>
+      <div class="fila"><div class="token"><b>Alerta</b>--alerta · -ink</div><div class="sw"><i style="background:#d05000"></i><i style="background:#7a3200"></i><code>orange-80 · orange-100</code></div></div>
+      <div class="fila"><div class="token"><b>Error de sistema</b>--error · -ink</div><div class="sw"><i style="background:#c41230"></i><i style="background:#7a0e1c"></i><code>red-80 · red-100</code></div></div>
+      <div class="fila"><div class="token"><b>Acento turquesa</b>--turquesa · -ink</div><div class="sw"><i style="background:#04d1cd"></i><i style="background:#028b89"></i><code>turquoise-80 · turquoise-100</code></div></div>
+      <div class="fila"><div class="token"><b>Acento limón</b>--limon · -ink</div><div class="sw"><i style="background:#77c014"></i><i style="background:#4a7a0b"></i><code>lemon-80 · lemon-100</code></div></div>
+    </div>
+    <div class="lado oscuro"><h4>Tema oscuro</h4>
+      <div class="fila"><div class="token"><b>Positivo, relleno</b>--positivo</div><div class="sw"><i style="background:#2a9152"></i><code>green-80</code></div></div>
+      <div class="fila"><div class="token"><b>Positivo, tinta</b>--positivo-ink</div><div class="sw"><i style="background:#55ab78"></i><code>green-60</code></div></div>
+      <div class="fila"><div class="token"><b>Negativo, relleno</b>--negativo</div><div class="sw"><i style="background:#aa49ca"></i><code>purple-80</code></div></div>
+      <div class="fila"><div class="token"><b>Negativo, tinta</b>--negativo-ink</div><div class="sw"><i style="background:#d59be6"></i><code>purple-40</code></div></div>
+      <div class="fila"><div class="token"><b>Advertencia</b>--advertencia · -ink</div><div class="sw"><i style="background:#c8a000"></i><i style="background:#dfbe40"></i><code>yellow-80 · yellow-60</code></div></div>
+      <div class="fila"><div class="token"><b>Alerta</b>--alerta · -ink</div><div class="sw"><i style="background:#d05000"></i><i style="background:#e07830"></i><code>orange-80 · orange-60</code></div></div>
+      <div class="fila"><div class="token"><b>Error de sistema</b>--error · -ink</div><div class="sw"><i style="background:#c41230"></i><i style="background:#d84055"></i><code>red-80 · red-60</code></div></div>
+      <div class="fila"><div class="token"><b>Acento turquesa</b>--turquesa · -ink</div><div class="sw"><i style="background:#04d1cd"></i><i style="background:#04d1cd"></i><code>turquoise-80 · turquoise-80</code></div></div>
+      <div class="fila"><div class="token"><b>Acento limón</b>--limon · -ink</div><div class="sw"><i style="background:#77c014"></i><i style="background:#9dd44f"></i><code>lemon-80 · lemon-60</code></div></div>
+    </div>
+  </div>
+
+  <h3>Bandas de desempeño (APS y cualquier puntaje con niveles)</h3>
+  <p>Seis bandas, de la más alta a la más baja. El chip lleva siempre el color de banda con texto blanco, en los dos temas. Lo que cambia con el tema es la tinta cuando la banda se escribe como texto (la cifra grande).</p>
+  <div class="par">
+    <div class="lado claro"><h4>Chip (los dos temas) · tinta en claro</h4>
+      <div class="fila"><div class="token"><b>Banda 1 · más alta</b>--banda-1</div><div class="sw"><span class="chip" style="background:#1a5a32">Aceptación alta</span><code>green-100 · tinta green-100</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 2</b>--banda-2</div><div class="sw"><span class="chip" style="background:#2a9152">Media alta</span><code>green-80 · tinta green-80</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 3</b>--banda-3</div><div class="sw"><span class="chip" style="background:#028b89">Media baja</span><code>turquoise-100 · tinta turquoise-100</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 4</b>--banda-4</div><div class="sw"><span class="chip" style="background:#482f91">Baja</span><code>violet-80 · tinta violet-80</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 5</b>--banda-5</div><div class="sw"><span class="chip" style="background:#7460ab">Requiere ajustes</span><code>violet-60 · tinta violet-60</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 6 · más baja</b>--banda-6</div><div class="sw"><span class="chip" style="background:#aa49ca">Riesgoso</span><code>purple-80 · tinta purple-80</code></div></div>
+    </div>
+    <div class="lado oscuro"><h4>Tinta en oscuro</h4>
+      <div class="fila"><div class="token"><b>Banda 1</b>--banda-1-ink</div><div class="sw"><i style="background:#55ab78"></i><code>green-60</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 2</b>--banda-2-ink</div><div class="sw"><i style="background:#85c9a1"></i><code>green-40</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 3</b>--banda-3-ink</div><div class="sw"><i style="background:#04d1cd"></i><code>turquoise-80</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 4</b>--banda-4-ink</div><div class="sw"><i style="background:#a492c5"></i><code>violet-40</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 5</b>--banda-5-ink</div><div class="sw"><i style="background:#ccc4e0"></i><code>violet-20</code></div></div>
+      <div class="fila"><div class="token"><b>Banda 6</b>--banda-6-ink</div><div class="sw"><i style="background:#d59be6"></i><code>purple-40</code></div></div>
+      <div style="font-size:12px;color:#a492c5;margin-top:12px">Con cuatro bandas se usan 1, 2, 4 y 6. Con tres, 1, 4 y 6. Con cinco, todas menos la 3. (<code>bandasPara</code> en ramps.ts.)</div>
+    </div>
+  </div>
+
+  <h3>Regiones de un mapa (las áreas Nielsen, o la clasificación que pase el estudio)</h3>
+  <p>Seis rellenos fijos, iguales en los dos temas, como las bandas. Sólo morados y violetas, alternados para que dos regiones vecinas nunca compartan tono. El número es el código del área Nielsen. CDMX es el paso hondo, para que se distinga dentro de Centro, que es claro.</p>
+  <div class="par">
+    <div class="lado claro"><h4>Los dos temas</h4>
+      <div class="fila"><div class="token"><b>1 · Pacífico</b>--color-region-1</div><div class="sw"><i style="background:#d59be6"></i><code>purple-40</code></div></div>
+      <div class="fila"><div class="token"><b>2 · Norte</b>--color-region-2</div><div class="sw"><i style="background:#482f91"></i><code>violet-80</code></div></div>
+      <div class="fila"><div class="token"><b>3 · Oeste-Centro</b>--color-region-3</div><div class="sw"><i style="background:#aa49ca"></i><code>purple-80</code></div></div>
+    </div>
+    <div class="lado oscuro"><h4>&nbsp;</h4>
+      <div class="fila"><div class="token"><b>4 · Centro</b>--color-region-4</div><div class="sw"><i style="background:#a492c5"></i><code>violet-40</code></div></div>
+      <div class="fila"><div class="token"><b>5 · CDMX</b>--color-region-5</div><div class="sw"><i style="background:#722f8f"></i><code>purple-100</code></div></div>
+      <div class="fila"><div class="token"><b>6 · Sureste</b>--color-region-6</div><div class="sw"><i style="background:#c072db"></i><code>purple-60</code></div></div>
+    </div>
+  </div>
+
+  <h2>4 · Fondos de lámina, con su par</h2>
+  <p>Cada fila es UN fondo. A la izquierda cómo se ve en tema claro; a la derecha cómo se ve en tema oscuro. Los de color (morado, púrpura, marino, tinta) son la marca y no cambian: se ven iguales en las dos caras. Los claros (superficie y superficie 2) son el papel y sí voltean. El turquesa deja de ser fondo de lámina, porque la guía lo reserva a acentos; la clase se conserva y apunta al morado.</p>
+  <style>
+    .pares { display:grid; gap:14px; }
+    .parfondo { display:grid; grid-template-columns: 150px 1fr 1fr; gap:10px; align-items:stretch; }
+    .parfondo .nombre { font-family:Poppins; font-weight:700; font-size:14px; align-self:center; }
+    .parfondo .nombre small { display:block; font-family:Hind; font-weight:400; font-size:12px; color:#656060; }
+    .cara2 { height:120px; border-radius:12px; padding:12px 14px; font-family:Hind; font-size:12px; line-height:1.35; display:flex; flex-direction:column; justify-content:space-between; }
+    .cara2 b { font-family:Poppins; font-size:11px; text-transform:uppercase; letter-spacing:.16em; opacity:.7; }
+    .cabecera { display:grid; grid-template-columns: 150px 1fr 1fr; gap:10px; font-family:Poppins; font-size:11px; text-transform:uppercase; letter-spacing:.16em; color:#656060; }
+  </style>
+  <div class="pares">
+    <div class="cabecera"><span></span><span>Tema claro</span><span>Tema oscuro</span></div>
+
+    <div class="parfondo">
+      <div class="nombre">primary<small>Portadas, separadores, láminas de peso</small></div>
+      <div class="cara2" style="color:#fff;background-image:radial-gradient(ellipse 120% 80% at 85% -10%, rgba(170,73,202,.55), transparent),radial-gradient(ellipse 100% 60% at -10% 110%, rgba(4,209,205,.25), transparent),linear-gradient(160deg,#482f91,#2d1d5d)"><b>Igual en los dos</b><span>violet-80 → violet-100, luz púrpura y turquesa</span></div>
+      <div class="cara2" style="color:#fff;background-image:radial-gradient(ellipse 120% 80% at 85% -10%, rgba(170,73,202,.55), transparent),radial-gradient(ellipse 100% 60% at -10% 110%, rgba(4,209,205,.25), transparent),linear-gradient(160deg,#482f91,#2d1d5d)"><b>Igual en los dos</b><span>violet-80 → violet-100, luz púrpura y turquesa</span></div>
+    </div>
+
+    <div class="parfondo">
+      <div class="nombre">secondary<small>El quiebre de un acto</small></div>
+      <div class="cara2" style="color:#fff;background-image:radial-gradient(ellipse 110% 70% at -10% -10%, rgba(72,47,145,.6), transparent),radial-gradient(ellipse 90% 60% at 110% 110%, rgba(4,209,205,.3), transparent),linear-gradient(160deg,#aa49ca,#722f8f)"><b>Igual en los dos</b><span>purple-80 → purple-100. El degradado insignia</span></div>
+      <div class="cara2" style="color:#fff;background-image:radial-gradient(ellipse 110% 70% at -10% -10%, rgba(72,47,145,.6), transparent),radial-gradient(ellipse 90% 60% at 110% 110%, rgba(4,209,205,.3), transparent),linear-gradient(160deg,#aa49ca,#722f8f)"><b>Igual en los dos</b><span>purple-80 → purple-100. El degradado insignia</span></div>
+    </div>
+
+    <div class="parfondo">
+      <div class="nombre">marino<small>Láminas densas de color</small></div>
+      <div class="cara2" style="color:#fff;background-image:radial-gradient(ellipse 110% 70% at 92% -10%, rgba(4,209,205,.22), transparent),radial-gradient(ellipse 90% 60% at -10% 110%, rgba(170,73,202,.16), transparent),linear-gradient(160deg,#028b89,#2d1d5d)"><b>Igual en los dos</b><span>turquoise-100 → violet-100. El Gradient Turquoise de la guía, sostenido oscuro</span></div>
+      <div class="cara2" style="color:#fff;background-image:radial-gradient(ellipse 110% 70% at 92% -10%, rgba(4,209,205,.22), transparent),radial-gradient(ellipse 90% 60% at -10% 110%, rgba(170,73,202,.16), transparent),linear-gradient(160deg,#028b89,#2d1d5d)"><b>Igual en los dos</b><span>turquoise-100 → violet-100. El Gradient Turquoise de la guía, sostenido oscuro</span></div>
+    </div>
+
+    <div class="parfondo">
+      <div class="nombre">ink<small>El cierre, la última lámina</small></div>
+      <div class="cara2" style="color:#fff;background-image:radial-gradient(ellipse 90% 60% at 80% 0%, rgba(72,47,145,.6), transparent),radial-gradient(ellipse 70% 50% at 10% 100%, rgba(170,73,202,.3), transparent),linear-gradient(180deg,#2d1d5d,#140d2a)"><b>Igual en los dos</b><span>violet-100 → morado profundo</span></div>
+      <div class="cara2" style="color:#fff;background-image:radial-gradient(ellipse 90% 60% at 80% 0%, rgba(72,47,145,.6), transparent),radial-gradient(ellipse 70% 50% at 10% 100%, rgba(170,73,202,.3), transparent),linear-gradient(180deg,#2d1d5d,#140d2a)"><b>Igual en los dos</b><span>violet-100 → morado profundo</span></div>
+    </div>
+
+    <div class="parfondo">
+      <div class="nombre">surface<small>Las láminas de datos</small></div>
+      <div class="cara2" style="color:#2d1d5d;background-image:linear-gradient(160deg,#ffffff 0%,#e5e0f2 62%,#ccc4e0 100%)"><b>Claro</b><span>blanco → violet-10 → violet-20. Sin luces lavanda-menta: teñían las gráficas</span></div>
+      <div class="cara2" style="color:#e5e0f2;background-image:linear-gradient(160deg,#2a1c58 0%,#201543 62%,#140d2a 100%)"><b>Oscuro</b><span>violet-100 → tarjeta oscura → página oscura</span></div>
+    </div>
+
+    <div class="parfondo">
+      <div class="nombre">surface-2<small>El segundo tono claro, para dar ritmo</small></div>
+      <div class="cara2" style="color:#2d1d5d;background-image:radial-gradient(ellipse 90% 60% at 100% 0%, rgba(164,146,197,.55), transparent),linear-gradient(160deg,#e5e0f2 0%,#ccc4e0 100%)"><b>Claro</b><span>violet-10 → violet-20, con luz violet-40</span></div>
+      <div class="cara2" style="color:#e5e0f2;background-image:radial-gradient(ellipse 90% 60% at 100% 0%, rgba(72,47,145,.35), transparent),linear-gradient(160deg,#2f2160 0%,#26194f 100%)"><b>Oscuro</b><span>tarjeta secundaria oscura, con luz violet-80</span></div>
+    </div>
+  </div>
+
+  <h2>5 · Lo que se retira</h2>
+  <table>
+    <tr><th>Token viejo</th><th>Qué era</th><th>Qué lo sustituye</th></tr>
+    <tr><td>--color-good #0ca30c</td><td>verde inventado</td><td>--positivo (green-80) · --positivo-ink (green-100)</td></tr>
+    <tr><td>--color-warning #fab219</td><td>dorado inventado</td><td>--advertencia (yellow-80) · -ink (yellow-100)</td></tr>
+    <tr><td>--color-serious #ec835a</td><td>coral inventado</td><td>--alerta (orange-80) · -ink (orange-100)</td></tr>
+    <tr><td>--color-critical #d03b3b</td><td>rojo inventado</td><td>--error (red-80) · -ink (red-100)</td></tr>
+    <tr><td>--color-info #3b82f6</td><td>azul de Tailwind</td><td>se retira; no hay azul en la marca</td></tr>
+    <tr><td>--color-jade, --color-lila, --color-gris, --color-turquoise-900/700, --color-lila-claro</td><td>"gama categórica" que no está en la guía</td><td>--cat-1 … --cat-5</td></tr>
+    <tr><td>--color-input #8345ba, --color-primary-700 #3a2676</td><td>morados intermedios inventados</td><td>violet-60 · violet-100</td></tr>
+    <tr><td>--banda-1 … --banda-4 (#177c4e, #029c99, #876ed0…)</td><td>bandas con tonos propios</td><td>--banda-1 … --banda-6 con pasos oficiales</td></tr>
+    <tr><td>--ink #1a1533, --ink-2 #57536e, --muted #726e88, --page #f3f2f9, --surface-2 #f6f5fb</td><td>neutrales inventados</td><td>violet-100, neutral-100, neutral-80, neutral-10, violet-10</td></tr>
+    <tr><td>card-bg-turquoise</td><td>lámina turquesa</td><td>la guía no admite turquesa como superficie: apunta a primary</td></tr>
+  </table>
+
+  <h2>6 · Cómo se audita a partir de ahora</h2>
+  <p>El auditor de color deja de dar veredictos de contraste. Sólo comprueba dos cosas: que ningún componente escriba un hex suelto, y que cada token que se use exista en este catálogo, en los dos temas. Si un color se ve, se ve; la fórmula no lo decide.</p>
+</main>
+<script>
+  const E = {
+    Violet:['#2d1d5d','#482f91','#7460ab','#a492c5','#ccc4e0','#e5e0f2'],
+    Purple:['#722f8f','#aa49ca','#c072db','#d59be6','#e8c5f2','#f4e0f9'],
+    Turquoise:['#028b89','#04d1cd','#3ddbd8','#7de9e7','#b0f2f0','#d8f8f7'],
+    Lemon:['#4a7a0b','#77c014','#9dd44f','#bde28a','#d8f0bb','#edfadb'],
+    Neutral:['#656060','#908989','#bbb4b4','#d5d1d1','#eae8e8','#f5f4f4'],
+    Green:['#1a5a32','#2a9152','#55ab78','#85c9a1','#b5e0c8','#daf0e3'],
+    Yellow:['#7a5400','#c8a000','#dfbe40','#edda80','#f5ecba','#faf5dc'],
+    Orange:['#7a3200','#d05000','#e07830','#eda070','#f5c8a8','#fbe4d2'],
+    Red:['#7a0e1c','#c41230','#d84055','#e87888','#f4b0ba','#fad8dc'],
+  };
+  const pasos=[100,80,60,40,20,10];
+  const lum=(h)=>{const c=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255).map(v=>v<=.03928?v/12.92:((v+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+  const cont=document.getElementById('escalas');
+  for(const [n,arr] of Object.entries(E)){
+    const row=document.createElement('div');row.className='escala';
+    row.innerHTML=`<div class="nom">${n}</div>`+arr.map((h,i)=>`<div class="paso" style="background:${h};color:${lum(h)>.35?'#2d1d5d':'#fff'}">${pasos[i]}<small>${h}</small></div>`).join('');
+    cont.appendChild(row);
+  }
+</script>
+</body>
+</html>

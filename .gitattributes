@@ -1,0 +1,21 @@
+# Finales de línea, normalizados de una vez.
+#
+# Sin esto, cada máquina Windows convierte a CRLF al guardar y Git reporta como
+# "modificados" archivos donde no cambió una sola letra. Con ocho operadores
+# —y alguno en Mac— eso llena `git status` de ruido y esconde los cambios de
+# verdad entre veinte diferencias fantasma.
+#
+# `text=auto eol=lf` guarda LF en el repositorio y deja que cada quien trabaje
+# como quiera en su disco.
+* text=auto eol=lf
+
+# Lo binario no se toca: normalizarlo lo corrompe.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+*.xlsx binary
+*.sav binary
